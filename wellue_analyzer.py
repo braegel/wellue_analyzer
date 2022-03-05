@@ -21,6 +21,10 @@ weeks = [g for n, g in df.groupby(pd.Grouper(key='timestamp',freq='W'))]
 print('Median values per week:')
 for week in weeks:
     print("%d\t%d\t%d\t%d" % (week.iloc[0]['timestamp'].isocalendar()[1],week['SYS(mmHg)'].median(),week['DIA(mmHg)'].median(),week['PR(bpm)'].median()))
+    # boxplot = week.boxplot(column=['SYS(mmHg)','DIA(mmHg)']);
+    # plt.title(week.iloc[0]['timestamp'].isocalendar()[1])
+    # plt.show()
 
-boxplot = df.boxplot(column=['SYS(mmHg)','DIA(mmHg)','PR(bpm)']);
+boxplot = df.boxplot(column=['SYS(mmHg)','DIA(mmHg)']);
+plt.title("Gesamt")
 plt.show()
