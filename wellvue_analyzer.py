@@ -2,5 +2,4 @@ import sys
 import pandas as pd
 
 df=pd.read_csv(sys.argv[1])
-print(df['SYS(mmHg)'].median())
-print(df['DIA(mmHg)'].median())
+print ("Median Bloodpressure: %d/%d" % (df['SYS(mmHg)'].median(),df['DIA(mmHg)'].median()))
