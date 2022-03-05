@@ -1,6 +1,7 @@
 import sys
 import pandas as pd
 import datetime
+import matplotlib.pyplot as plt
 
 print()
 df=pd.read_csv(sys.argv[1])
@@ -20,3 +21,6 @@ weeks = [g for n, g in df.groupby(pd.Grouper(key='timestamp',freq='W'))]
 print('Median values per week:')
 for week in weeks:
     print("%d\t%d\t%d\t%d" % (week.iloc[0]['timestamp'].isocalendar()[1],week['SYS(mmHg)'].median(),week['DIA(mmHg)'].median(),week['PR(bpm)'].median()))
+
+boxplot = df.boxplot(column=['SYS(mmHg)','DIA(mmHg)','PR(bpm)']);
+plt.show()
