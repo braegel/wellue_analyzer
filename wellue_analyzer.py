@@ -62,7 +62,6 @@ df=pd.read_csv(sys.argv[1])
 
 print ("Median bloodpressure [mmHG]: %d/%d %s" % (df['SYS(mmHg)'].median(),df['DIA(mmHg)'].median(),grading_description(hypertension_grading(df['SYS(mmHg)'].median(),df['DIA(mmHg)'].median()))))
 print ("Median heartrate [/s]: %d" % (df['PR(bpm)'].median()))
-print()
 
 timestamps=[]
 gradings=[]
@@ -73,25 +72,35 @@ for index, row in df.iterrows():
     gradings.append(grading)
 df["timestamp"]=timestamps
 df["grading"]=gradings
-#print(df.head())
+
 weeks = [g for n, g in df.groupby(pd.Grouper(key='timestamp',freq='W'))]
-#print(type(weeks))
+print()
 print('Median values per week:')
 print('Week\tSys\tDia\tBPM\tN\tGrading')
 for week in weeks:
     print("%d\t%d\t%d\t%d\t%i\t%s\tMax: %s" % (week.iloc[0]['timestamp'].isocalendar()[1],week['SYS(mmHg)'].median(),week['DIA(mmHg)'].median(),week['PR(bpm)'].median(),len(week),grading_description(hypertension_grading(week['SYS(mmHg)'].median(),week['DIA(mmHg)'].median())),grading_description(week['grading'].max())))
 
-print()
-print('Hypertension Timestamps')
+days = [g for n, g in df.groupby(pd.Grouper(key='timestamp',freq='D'))]
+#print(type(days))
+# print()
+# print('Median values per day:')
+# print('Day\t\tSys\tDia\tBPM\tN\tGrading')
+# for day in days:
+#     print("%s\t%d\t%d\t%d\t%i\t%s" % (day.iloc[0]['timestamp'].strftime('%d.%m.%Y'),day['SYS(mmHg)'].median(),day['DIA(mmHg)'].median(),day['PR(bpm)'].median(),len(day),grading_description(hypertension_grading(day['SYS(mmHg)'].median(),day['DIA(mmHg)'].median()))))
 
-hypertension = df[df['grading'] > 2]
-print(hypertension[['DateTime','SYS(mmHg)','DIA(mmHg)','PR(bpm)','grading']].to_string())
+df[['SYS(mmHg)','DIA(mmHg)','timestamp']].plot(x='timestamp',grid=True)
+plt.show()
+
+# print()
+# print('Hypertension Timestamps')
+# hypertension = df[df['grading'] > 2]
+# print(hypertension[['DateTime','SYS(mmHg)','DIA(mmHg)','PR(bpm)','grading']].to_string())
 
     
     # boxplot = week.boxplot(column=['SYS(mmHg)','DIA(mmHg)']);
     # plt.title(week.iloc[0]['timestamp'].isocalendar()[1])
     # plt.show()
 
-boxplot = df.boxplot(column=['SYS(mmHg)','DIA(mmHg)']);
-plt.title("Gesamt")
-#plt.show()
+# boxplot = df.boxplot(column=['SYS(mmHg)','DIA(mmHg)']);
+# plt.title("Gesamt")
+# plt.show()
